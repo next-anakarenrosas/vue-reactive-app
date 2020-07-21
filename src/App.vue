@@ -6,17 +6,16 @@
         <h3>Pokémon</h3>
       </div>
       <v-spacer></v-spacer>
-      <v-badge :content="captured" :value="captured" color="green" overlap>
+      <v-badge :content="totalPokemonsCaptured" :value="totalPokemonsCaptured" color="green" overlap>
         Captured
         <v-icon>mdi-account-child-circle</v-icon>
       </v-badge>
     </v-app-bar>
 
-    <v-content flat>
+    <v-content fluid>
       <v-row class="my-4 justify-space-around">
         <v-btn @click="getPokemons">Get Pokemons</v-btn>
       </v-row>
-
       <div class="d-flex flex-wrap justify-space-around">
         <pokemon-card
           class="mb-4"
@@ -33,6 +32,7 @@
 <script>
 import Api from "@/api/api.js";
 import PokemonCard from "@/components/PokemonCard";
+
 export default {
   name: "App",
   components: {
@@ -40,9 +40,13 @@ export default {
   },
   data: () => ({
     pokemons: [],
-    captured: 0,
-    drawer: false
+    pokemonsCaptured: []
   }),
+  computed:{
+    totalPokemonsCaptured(){
+      return this.pokemonsCaptured.length
+    }
+  },
   methods: {
     getPokemons() {
       Api.getPokemons().then(pokemons => {
@@ -76,11 +80,15 @@ export default {
     },
     capturePokemon(pokemon) {
       console.log("Pokemon capturado-->", pokemon);
-      this.captured++;
+      this.pokemonsCaptured.push(pokemon)
     },
     liberatePokemon(pokemon) {
       console.log("Pokemon liberado-->", pokemon);
-      this.captured--;
+      this.pokemonsCaptured.forEach((item, index)=>{
+        if(item.name == pokemon.name){
+          this.pokemonsCaptured.splice(index, 1)
+        }
+      })
     }
   }
 };

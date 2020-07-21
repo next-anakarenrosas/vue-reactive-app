@@ -23,10 +23,10 @@
     <img class="photo" :src="pokemon.image" />
     <v-card-actions class="d-flex justify-end">
       <v-btn @click="getPokemon(pokemon)">
-        <label v-if="!pokemon.captured">
+        <label v-show="!pokemon.captured">
             Capturar <v-icon >mdi-package-variant-closed</v-icon>
         </label>
-        <label v-else>
+        <label v-show="pokemon.captured">
             Liberar <v-icon>mdi-package-variant</v-icon>
         </label>
       </v-btn>
@@ -51,10 +51,9 @@ export default {
             pokemon.captured = true;
             this.$emit('pokemon-captured', pokemon)
           } else {
-              pokemon.captured = false;
-              this.$emit('pokemon-liberated', pokemon)
+            pokemon.captured = false;
+            this.$emit('pokemon-liberated', pokemon)
           }
-          
       }
   }
 };
