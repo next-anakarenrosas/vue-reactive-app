@@ -8,9 +8,13 @@
       <v-spacer></v-spacer>
       <v-badge :content="totalPokemonsCaptured" :value="totalPokemonsCaptured" color="green" overlap>
         Captured
-        <v-icon>mdi-account-child-circle</v-icon>
+        <v-icon @click="drawer = !drawer">mdi-account-child-circle</v-icon>
       </v-badge>
     </v-app-bar>
+
+    <v-navigation-drawer v-model="drawer" app right clipped>
+      <code v-for="pokemon in pokemonsCaptured" :key="pokemon.id">{{pokemon.name}}</code>
+    </v-navigation-drawer>
 
     <v-content fluid>
       <v-row class="my-4 justify-space-around">
@@ -40,7 +44,8 @@ export default {
   },
   data: () => ({
     pokemons: [],
-    pokemonsCaptured: []
+    pokemonsCaptured: [],
+    drawer: false
   }),
   computed:{
     totalPokemonsCaptured(){
